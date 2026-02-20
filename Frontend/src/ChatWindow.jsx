@@ -27,7 +27,7 @@ function ChatWindow() {
 
        try {
     const response = await fetch(
-        "https://sigmagpt-backend.onrender.com/api/chat",
+        "https://sigmagpt-backend-iily.onrender.com/api/chat",
         options
     );
 

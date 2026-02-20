@@ -21,7 +21,7 @@ function Sidebar() {
     const getAllThreads = async () => {
         try {
             const response = await fetch(
-                "https://sigmagpt-backend.onrender.com/api/thread"
+                "https://sigmagpt-backend-iily.onrender.com/api/chat"
             );
 
             const res = await response.json();
@@ -59,9 +59,9 @@ function Sidebar() {
         setCurrThreadId(newThreadId);
 
         try {
-            const response = await fetch(
-                `https://sigmagpt-backend.onrender.com/api/thread/${newThreadId}`
-            );
+           const response = await fetch(
+    `https://sigmagpt-backend-iily.onrender.com/api/thread/${newThreadId}`
+);
 
             if (!response.ok) return;
 
@@ -81,9 +81,9 @@ function Sidebar() {
     const deleteThread = async (threadId) => {
         try {
             const response = await fetch(
-                `https://sigmagpt-backend.onrender.com/api/thread/${threadId}`,
-                { method: "DELETE" }
-            );
+    `https://sigmagpt-backend-iily.onrender.com/api/thread/${threadId}`,
+    { method: "DELETE" }
+);
 
             if (!response.ok) return;
 
