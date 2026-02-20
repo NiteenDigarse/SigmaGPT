@@ -7,16 +7,23 @@ function Sidebar() {
     const {allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats} = useContext(MyContext);
 
     const getAllThreads = async () => {
-        try {
-            const response = await fetch("http://localhost:8080/api/thread");
-            const res = await response.json();
-            const filteredData = res.map(thread => ({threadId: thread.threadId, title: thread.title}));
-            //console.log(filteredData);
-            setAllThreads(filteredData);
-        } catch(err) {
-            console.log(err);
-        }
-    };
+    try {
+        const response = await fetch(
+            "https://sigmagpt-backend.onrender.com/api/thread"
+        );
+
+        const res = await response.json();
+
+        const filteredData = res.map(thread => ({
+            threadId: thread.threadId,
+            title: thread.title
+        }));
+
+        setAllThreads(filteredData);
+    } catch (err) {
+        console.log(err);
+    }
+};
 
     useEffect(() => {
         getAllThreads();
@@ -32,37 +39,46 @@ function Sidebar() {
     }
 
     const changeThread = async (newThreadId) => {
-        setCurrThreadId(newThreadId);
+    setCurrThreadId(newThreadId);
 
-        try {
-            const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`);
-            const res = await response.json();
-            console.log(res);
-            setPrevChats(res);
-            setNewChat(false);
-            setReply(null);
-        } catch(err) {
-            console.log(err);
-        }
-    }   
+    try {
+        const response = await fetch(
+            `https://sigmagpt-backend.onrender.com/api/thread/${newThreadId}`
+        );
+        const res = await response.json();
+        console.log(res);
+
+        setPrevChats(res);
+        setNewChat(false);
+        setReply(null);
+    } catch (err) {
+        console.log(err);
+    }
+};
+    
 
     const deleteThread = async (threadId) => {
-        try {
-            const response = await fetch(`http://localhost:8080/api/thread/${threadId}`, {method: "DELETE"});
-            const res = await response.json();
-            console.log(res);
+    try {
+        const response = await fetch(
+            `https://sigmagpt-backend.onrender.com/api/thread/${threadId}`,
+            { method: "DELETE" }
+        );
 
-            //updated threads re-render
-            setAllThreads(prev => prev.filter(thread => thread.threadId !== threadId));
+        const res = await response.json();
+        console.log(res);
 
-            if(threadId === currThreadId) {
-                createNewChat();
-            }
+        // updated threads re-render
+        setAllThreads(prev =>
+            prev.filter(thread => thread.threadId !== threadId)
+        );
 
-        } catch(err) {
-            console.log(err);
+        if (threadId === currThreadId) {
+            createNewChat();
         }
+    } catch (err) {
+        console.log(err);
     }
+};
 
     return (
         <section className="sidebar">
