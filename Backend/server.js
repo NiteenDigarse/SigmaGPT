@@ -6,22 +6,25 @@ import chatRoutes from "./routes/chat.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// 🔥 Fix __dirname for ES Modules
+// Fix __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 🔥 Load .env from Backend folder explicitly
+// Load .env (local only)
 dotenv.config({ path: path.join(__dirname, ".env") });
 
-// 🔍 Debug (remove later)
-console.log("ENV TEST:", process.env.GROQ_API_KEY);
-
 const app = express();
-const PORT = 8080;
 
-// Middleware
+// ✅ FIX 1: Use Render PORT
+const PORT = process.env.PORT || 8080;
+
+// ✅ FIX 2: Proper CORS for Production
+app.use(cors({
+    origin: "https://frontend-sigmagpt.onrender.com",
+    credentials: true
+}));
+
 app.use(express.json());
-app.use(cors());
 
 // Routes
 app.use("/api", chatRoutes);
